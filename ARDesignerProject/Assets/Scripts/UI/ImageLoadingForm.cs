@@ -24,6 +24,6 @@ public class ImageLoadingForm : MonoBehaviour
             return;
 
         _globalEvents.ImageLoaded?.Invoke(_inputField.text);
-        Debug.Log(_inputField.text);
+        Debug.Log($"Entered URL: {_inputField.text}");
     }
 }
