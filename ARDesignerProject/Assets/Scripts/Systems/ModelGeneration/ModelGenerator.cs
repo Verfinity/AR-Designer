@@ -10,12 +10,18 @@ namespace ModelGeneration
     {
         [SerializeField]
         private ModelGenerationConfigurationScriptableObject _modelGenerationConfig;
+        [SerializeField]
+        private int _attempsToAskFailedTask;
 
         private GlobalEvents _globalEvents;
+        private ModelGenerationEvents _modelGenerationEvents;
+
+        private int _currentAttemsToAskFaieldTask = 0;
 
         private void Awake()
         {
             _globalEvents = GlobalEvents.GetInstance();
+            _modelGenerationEvents = ModelGenerationEvents.GetInstance();
         }
 
         private void OnImageLoaded(string imageUrl)
@@ -66,6 +72,7 @@ namespace ModelGeneration
                 }
                 else
                 {
+                    _modelGenerationEvents.ModelGenerationFailed?.Invoke();
                     Debug.Log($"Can't create task with status code: {request.responseCode}");
                     Debug.Log(request.downloadHandler.text);
                 }
@@ -74,6 +81,7 @@ namespace ModelGeneration
 
         private IEnumerator CheckTask(string taskId)
         {
+            _currentAttemsToAskFaieldTask = 0;
             while (true)
             {
                 using (var request = new UnityWebRequest($"{_modelGenerationConfig.ApiUrl}/{taskId}", "GET"))
@@ -87,22 +95,39 @@ namespace ModelGeneration
                     if (request.result == UnityWebRequest.Result.Success)
                     {
                         var taskStatusResponse = JsonUtility.FromJson<TaskStatusResponse>(request.downloadHandler.text);
-                        Debug.Log($"Task status: {taskStatusResponse.data.status}");
-                        Debug.Log($"Task progress: {taskStatusResponse.data.progress}");
-
-                        if (taskStatusResponse.data.status == "success")
-                        {
-                            Debug.Log($"Model URL: {taskStatusResponse.data.output.pbr_model}");
-                            Debug.Log($"Rendered image URL: {taskStatusResponse.data.output.rendered_image}");
-                        }
-
                         if (taskStatusResponse.data.status != "queued" && taskStatusResponse.data.status != "running")
-                            break;
+                        {
+                            if (taskStatusResponse.data.status == "success")
+                            {
+                                _modelGenerationEvents.ModelGenerationSucceeded?.Invoke(taskStatusResponse.data.output.pbr_model, taskStatusResponse.data.output.rendered_image);
+                                Debug.Log($"Model URL: {taskStatusResponse.data.output.pbr_model}");
+                                Debug.Log($"Rendered image URL: {taskStatusResponse.data.output.rendered_image}");
+                            }
+                            else
+                            {
+                                _modelGenerationEvents.ModelGenerationFailed?.Invoke();
+                                Debug.Log("Model generation failed!");
+                            }
+                        }
+                        else
+                        {
+                            _modelGenerationEvents.ModelGenerationStatusUpdated?.Invoke(taskStatusResponse.data.progress);
+                            Debug.Log($"Task status: {taskStatusResponse.data.status}");
+                            Debug.Log($"Task progress: {taskStatusResponse.data.progress}");
+                        }
                     }
                     else
                     {
+                        Debug.Log($"Attempts left: {_attempsToAskFailedTask - _currentAttemsToAskFaieldTask}");
                         Debug.Log($"Can't get task information with status code: {request.result}");
                         Debug.Log(request.downloadHandler.text);
+                        if (_currentAttemsToAskFaieldTask == _attempsToAskFailedTask)
+                        {
+                            _modelGenerationEvents.ModelGenerationFailed?.Invoke();
+                            Debug.Log("Model generation failed!");
+                            break;
+                        }
+                        _currentAttemsToAskFaieldTask++;
                     }
                 }
 
