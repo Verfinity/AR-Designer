@@ -72,7 +72,6 @@ namespace ModelGeneration
                 }
                 else
                 {
-                    _modelGenerationEvents.ModelGenerationFailed?.Invoke();
                     Debug.Log($"Can't create task with status code: {request.responseCode}");
                     Debug.Log(request.downloadHandler.text);
                 }
@@ -81,6 +80,7 @@ namespace ModelGeneration
 
         private IEnumerator CheckTask(string taskId)
         {
+            _modelGenerationEvents.ModelGenerationStarted?.Invoke(taskId);
             _currentAttemsToAskFaieldTask = 0;
             while (true)
             {
@@ -99,19 +99,19 @@ namespace ModelGeneration
                         {
                             if (taskStatusResponse.data.status == "success")
                             {
-                                _modelGenerationEvents.ModelGenerationSucceeded?.Invoke(taskStatusResponse.data.output.pbr_model, taskStatusResponse.data.output.rendered_image);
+                                _modelGenerationEvents.ModelGenerationSucceeded?.Invoke(taskId, taskStatusResponse.data.output.pbr_model, taskStatusResponse.data.output.rendered_image);
                                 Debug.Log($"Model URL: {taskStatusResponse.data.output.pbr_model}");
                                 Debug.Log($"Rendered image URL: {taskStatusResponse.data.output.rendered_image}");
                             }
                             else
                             {
-                                _modelGenerationEvents.ModelGenerationFailed?.Invoke();
+                                _modelGenerationEvents.ModelGenerationFailed?.Invoke(taskId);
                                 Debug.Log("Model generation failed!");
                             }
                         }
                         else
                         {
-                            _modelGenerationEvents.ModelGenerationStatusUpdated?.Invoke(taskStatusResponse.data.progress);
+                            _modelGenerationEvents.ModelGenerationStatusUpdated?.Invoke(taskId, taskStatusResponse.data.progress);
                             Debug.Log($"Task status: {taskStatusResponse.data.status}");
                             Debug.Log($"Task progress: {taskStatusResponse.data.progress}");
                         }
@@ -123,7 +123,7 @@ namespace ModelGeneration
                         Debug.Log(request.downloadHandler.text);
                         if (_currentAttemsToAskFaieldTask == _attempsToAskFailedTask)
                         {
-                            _modelGenerationEvents.ModelGenerationFailed?.Invoke();
+                            _modelGenerationEvents.ModelGenerationFailed?.Invoke(taskId);
                             Debug.Log("Model generation failed!");
                             break;
                         }
