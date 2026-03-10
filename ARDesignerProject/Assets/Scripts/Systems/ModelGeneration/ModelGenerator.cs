@@ -9,7 +9,7 @@ namespace ModelGeneration
     public class ModelGenerator : MonoBehaviour
     {
         [SerializeField]
-        private ModelGenerationConfigurationScriptableObject _modelGenerationConfig;
+        private ApiConfigurationScriptableObject _modelGenerationConfig;
         [SerializeField]
         private int _attempsToAskFailedTask;
 
@@ -26,7 +26,7 @@ namespace ModelGeneration
 
         private void OnImageLoaded(string imageUrl)
         {
-            StartCoroutine(GetModelGenerationTask(imageUrl));
+            StartCoroutine(GetModelGenerationTaskCoroutine(imageUrl));
         }
 
         private string GetImageType(string imageUrl)
@@ -36,7 +36,7 @@ namespace ModelGeneration
             return type;
         }
 
-        private IEnumerator GetModelGenerationTask(string imageUrl)
+        private IEnumerator GetModelGenerationTaskCoroutine(string imageUrl)
         {
             var body = new GenerateModelRequest
             {
@@ -68,7 +68,7 @@ namespace ModelGeneration
                     string taskId = responseData.data.task_id;
 
                     Debug.Log($"Task id: {taskId}");
-                    StartCoroutine(CheckTask(taskId));
+                    StartCoroutine(CheckTaskCoroutine(taskId));
                 }
                 else
                 {
@@ -78,7 +78,7 @@ namespace ModelGeneration
             }
         }
 
-        private IEnumerator CheckTask(string taskId)
+        private IEnumerator CheckTaskCoroutine(string taskId)
         {
             _modelGenerationEvents.ModelGenerationStarted?.Invoke(taskId);
             _currentAttemsToAskFaieldTask = 0;
@@ -108,6 +108,7 @@ namespace ModelGeneration
                                 _modelGenerationEvents.ModelGenerationFailed?.Invoke(taskId);
                                 Debug.Log("Model generation failed!");
                             }
+                            break;
                         }
                         else
                         {

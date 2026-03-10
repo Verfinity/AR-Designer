@@ -707,6 +707,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ModelGeneration.ModelGenerator
   _modelGenerationConfig: {fileID: 11400000, guid: e37c7c6fed6585144b12482d45ed741e, type: 2}
+  _attempsToAskFailedTask: 3
 --- !u!224 &1361813755 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 481691353708635586, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
@@ -1408,16 +1409,48 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1611865526204599456, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1611865526204599456, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1611865526204599456, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1000261044}
+    - target: {fileID: 1611865526204599456, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1611865526204599456, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1611865526204599456, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: Convert
+      objectReference: {fileID: 0}
+    - target: {fileID: 1611865526204599456, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: ImageTypesFormatter.ImageTypesConverter, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1611865526204599456, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1611865526204599456, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1808984100893365728, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2181130077982175262, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
       propertyPath: m_Name
-      value: Scroll Menu
+      value: ScrollMenu
       objectReference: {fileID: 0}
     - target: {fileID: 8316352917240300100, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1429,7 +1462,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8316352917240300100, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 139.926
+      value: 190.32
       objectReference: {fileID: 0}
     - target: {fileID: 8316352917240300100, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1539,6 +1572,10 @@ PrefabInstance:
     - target: {fileID: 3256822218758701420, guid: ed691b16a266af34eba87cc04c9b649d, type: 3}
       propertyPath: m_Name
       value: ImageLoadingForm
+      objectReference: {fileID: 0}
+    - target: {fileID: 3256822218758701420, guid: ed691b16a266af34eba87cc04c9b649d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

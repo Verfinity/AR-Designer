@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 4220436898802184794}
   - component: {fileID: 7075777058038743169}
   - component: {fileID: 7817533509193827961}
+  - component: {fileID: 3884301125259888528}
   m_Layer: 5
-  m_Name: Scroll Menu
+  m_Name: ScrollMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,6 +123,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
   m_Padding: {x: 0, y: 0, z: 0, w: 0}
   m_Softness: {x: 0, y: 0}
+--- !u!114 &3884301125259888528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2181130077982175262}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6c5bc4db690edb488ab2a3257e15ff4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ModelSelectionButtonCreator
+  _instantiateParentLayoutGroup: {fileID: 1808984100893365728}
+  _instantiateButton: {fileID: 8800792235828864528, guid: dcd95cd6146f4e041940aafea99b38ed, type: 3}
 --- !u!1 &5249591209030720758
 GameObject:
   m_ObjectHideFlags: 0
