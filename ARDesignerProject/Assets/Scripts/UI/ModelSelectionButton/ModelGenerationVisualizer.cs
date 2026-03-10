@@ -5,10 +5,10 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 using WebP;
 
-public class ModelSelectionButton : MonoBehaviour
+public class ModelGenerationVisualizer : MonoBehaviour
 {
-    private string _modelId = string.Empty;
-
+    [SerializeField]
+    private ModelIdentity _modelIdentity;
     [SerializeField]
     private TextMeshProUGUI _modelGenerationProgressText;
     [SerializeField]
@@ -22,17 +22,9 @@ public class ModelSelectionButton : MonoBehaviour
         _modelGenerationProgressText.text = "0%";
     }
 
-    public void SetModelId(string modelId)
-    {
-        if (_modelId != string.Empty)
-            return;
-
-        _modelId = modelId;
-    }
-
     private void OnModelGenerationStatusUpdated(string taskId, int progress)
     {
-        if (_modelId != taskId)
+        if (_modelIdentity.ModelId != taskId)
             return;
 
         _modelGenerationProgressText.text = $"{progress}%";
@@ -40,7 +32,7 @@ public class ModelSelectionButton : MonoBehaviour
 
     private void OnModelGenerationFailed(string taskId)
     {
-        if (_modelId != taskId)
+        if (_modelIdentity.ModelId != taskId)
             return;
 
         Destroy(gameObject);
@@ -48,7 +40,7 @@ public class ModelSelectionButton : MonoBehaviour
 
     private void OnModelGenerationSucceeded(string taskId, string modelUrl, string modelImageUrl)
     {
-        if (_modelId != taskId)
+        if (_modelIdentity.ModelId != taskId)
             return;
 
         _modelGenerationProgressText.gameObject.SetActive(false);

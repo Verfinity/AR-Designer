@@ -13,7 +13,10 @@ GameObject:
   - component: {fileID: 6516694912479176389}
   - component: {fileID: 4774612796484163385}
   - component: {fileID: 4551154654667777701}
-  - component: {fileID: 5289718006106737739}
+  - component: {fileID: 7165307574984253236}
+  - component: {fileID: 7905822909800784857}
+  - component: {fileID: 6720979473324783577}
+  - component: {fileID: 2706514637961638151}
   m_Layer: 5
   m_Name: ModelSelectionButton
   m_TagString: Untagged
@@ -39,7 +42,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 190.32, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7681980714130975170
 CanvasRenderer:
@@ -116,7 +119,7 @@ MonoBehaviour:
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
   m_Interactable: 1
-  m_TargetGraphic: {fileID: 0}
+  m_TargetGraphic: {fileID: 6516694912479176389}
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
@@ -134,7 +137,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.AspectRatioFitter
   m_AspectMode: 2
   m_AspectRatio: 1
---- !u!114 &5289718006106737739
+--- !u!114 &7165307574984253236
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,11 +146,52 @@ MonoBehaviour:
   m_GameObject: {fileID: 2279794057477770606}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccad5bff37837b34cb1fba0ef537167c, type: 3}
+  m_Script: {fileID: 11500000, guid: bbd1ad696acad7b49a0e308960721985, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ModelSelectionButton
+  m_EditorClassIdentifier: Assembly-CSharp::ModelIdentity
+--- !u!114 &7905822909800784857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2279794057477770606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b2d43236e4649e409fffead85b19791, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ModelSelectionController
+  _modelIdentity: {fileID: 7165307574984253236}
+  _button: {fileID: 4774612796484163385}
+--- !u!114 &6720979473324783577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2279794057477770606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55f1cb8d33f007044a692b6ebf7bbb9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ModelGenerationVisualizer
+  _modelIdentity: {fileID: 7165307574984253236}
   _modelGenerationProgressText: {fileID: 7539783071759583601}
   _rawImage: {fileID: 6516694912479176389}
+--- !u!114 &2706514637961638151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2279794057477770606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bde5a8a423954d548a2a38adde54eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ModelSelectionVisualizer
+  _modelIdentity: {fileID: 7165307574984253236}
+  _selectedScale: 0.75
 --- !u!1 &7148009291976881625
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +284,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 18
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1

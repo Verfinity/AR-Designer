@@ -21,8 +21,8 @@ public class ModelSelectionButtonCreator : MonoBehaviour
         var obj = Instantiate(_instantiateButton, _instantiateParentLayoutGroup);
         StartCoroutine(UpdateLayoutGroup());
 
-        ModelSelectionButton modelSelectionButton;
-        if (obj.TryGetComponent<ModelSelectionButton>(out modelSelectionButton))
+        ModelIdentity modelSelectionButton;
+        if (obj.TryGetComponent<ModelIdentity>(out modelSelectionButton))
             modelSelectionButton.SetModelId(taskId);
     }
 

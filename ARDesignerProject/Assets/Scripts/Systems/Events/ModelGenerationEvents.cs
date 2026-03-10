@@ -1,5 +1,3 @@
-using System;
-
 public class ModelGenerationEvents : Singleton<ModelGenerationEvents>
 {
     public GenerationModel ModelGenerationStarted;
