@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public class ModelSelectionController : MonoBehaviour
+public class ModelSelectionUIController : MonoBehaviour
 {
     [SerializeField]
     private ModelIdentity _modelIdentity;
@@ -16,7 +16,7 @@ public class ModelSelectionController : MonoBehaviour
         _globalEvents = GlobalEvents.GetInstance();
     }
 
-    private void OnModelCreated(string modelId)
+    private void OnModelCreated(string modelId, GameObject modelObj)
     {
         _button.onClick.AddListener(OnButtonPressed);
     }

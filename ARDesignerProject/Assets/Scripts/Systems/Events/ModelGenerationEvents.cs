@@ -5,7 +5,7 @@ public class ModelGenerationEvents : Singleton<ModelGenerationEvents>
     public GenerationModel ModelGenerationFailed;
     public ModelData ModelGenerationSucceeded;
 
-    public delegate void ModelData(string taskId, string modelUrl, string modelImageUrl);
-    public delegate void GenerationModel(string taskId);
-    public delegate void GenerationModelStatus(string taskId, int progress);
+    public delegate void ModelData(string modelId, string modelUrl, string modelImageUrl);
+    public delegate void GenerationModel(string modelId);
+    public delegate void GenerationModelStatus(string modelId, int progress);
 }
