@@ -17,15 +17,18 @@ public class ModelSetuper : MonoBehaviour
 
     private void SetupModel(GameObject modelObj)
     {
-        modelObj.SetActive(false);
-        modelObj.AddComponent<MeshCollider>();
-        modelObj.transform.localScale = Vector3.one * _startScale;
+        var modelVisual = modelObj.transform.GetChild(0).gameObject;
+
+        modelVisual.SetActive(false);
+        modelVisual.AddComponent<MeshCollider>();
+        modelVisual.transform.localScale = Vector3.one * _startScale;
     }
 
     private void OnUnsetupedModelCreated(string modelId, GameObject modelObj)
     {
-        SetupModel(modelObj.transform.GetChild(0).gameObject);
+        SetupModel(modelObj);
         _globalEvents.ModelCreated?.Invoke(modelId, modelObj);
+        _globalEvents.ModelSelected?.Invoke(modelId);
     }
 
     private void OnEnable()

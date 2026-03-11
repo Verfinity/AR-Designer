@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ModelGenerationApiConfiguration
   m_EditorClassIdentifier: Assembly-CSharp::ModelGenerationConfigurationScriptableObject
   ApiUrl: https://api.tripo3d.ai/v2/openapi/task
-  ApiKey: tsk_QKdXQS824K9_4A0qEOj9qMIIO7PJk3bgy5cnvSwYyL8
+  ApiKey: tsk_TCNU8cCZvv06dY7QvqyjMlXd38nbemYgfArZXdZ_xeF

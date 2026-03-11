@@ -600,6 +600,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1191337918}
   - component: {fileID: 1191337919}
+  - component: {fileID: 1191337920}
   m_Layer: 0
   m_Name: AR Placement Interactable
   m_TagString: Untagged
@@ -709,6 +710,19 @@ MonoBehaviour:
   m_OnObjectPlaced:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1191337920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1191337917}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 941314d963f185340a3bda65260b95ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ModelSpawnVisualizerActivator
+  _placementInteratable: {fileID: 1191337919}
 --- !u!1 &1328597071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1569,7 +1583,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8316352917240300100, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 150.25601
+      value: 190.32
       objectReference: {fileID: 0}
     - target: {fileID: 8316352917240300100, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
       propertyPath: m_SizeDelta.y
