@@ -15,36 +15,45 @@ public class ModelGenerationVisualizer : MonoBehaviour
     private RawImage _rawImage;
 
     private ModelGenerationEvents _modelGenerationEvents;
+    private GlobalEvents _globalEvents;
+    private string _modelImageUrl = string.Empty;
 
     private void Awake()
     {
         _modelGenerationEvents = ModelGenerationEvents.GetInstance();
+        _globalEvents = GlobalEvents.GetInstance();
         _modelGenerationProgressText.text = "0%";
     }
 
-    private void OnModelGenerationStatusUpdated(string taskId, int progress)
+    private void OnModelGenerationStatusUpdated(string modelId, int progress)
     {
-        if (_modelIdentity.ModelId != taskId)
+        if (_modelIdentity.ModelId != modelId)
             return;
 
         _modelGenerationProgressText.text = $"{progress}%";
     }
 
-    private void OnModelGenerationFailed(string taskId)
+    private void OnModelGenerationFailed(string modelId)
     {
-        if (_modelIdentity.ModelId != taskId)
+        if (_modelIdentity.ModelId != modelId)
             return;
 
         Destroy(gameObject);
     }
 
-    private void OnModelGenerationSucceeded(string taskId, string modelUrl, string modelImageUrl)
+    private void OnModelGenerationSucceeded(string modelId, string modelUrl, string modelImageUrl)
     {
-        if (_modelIdentity.ModelId != taskId)
+        if (_modelIdentity.ModelId != modelId)
             return;
 
+        _modelGenerationProgressText.text = "Creating...";
+        _modelImageUrl = modelImageUrl;
+    }
+
+    private void OnModelCreated(string modelId, GameObject modelObj)
+    {
         _modelGenerationProgressText.gameObject.SetActive(false);
-        StartCoroutine(SetTexture(modelImageUrl));
+        StartCoroutine(SetTexture(_modelImageUrl));
     }
 
     private IEnumerator SetTexture(string imageUrl)
@@ -68,6 +77,7 @@ public class ModelGenerationVisualizer : MonoBehaviour
         _modelGenerationEvents.ModelGenerationSucceeded += OnModelGenerationSucceeded;
         _modelGenerationEvents.ModelGenerationFailed += OnModelGenerationFailed;
         _modelGenerationEvents.ModelGenerationStatusUpdated += OnModelGenerationStatusUpdated;
+        _globalEvents.ModelCreated += OnModelCreated;
     }
 
     private void OnDisable()
@@ -75,5 +85,6 @@ public class ModelGenerationVisualizer : MonoBehaviour
         _modelGenerationEvents.ModelGenerationSucceeded -= OnModelGenerationSucceeded;
         _modelGenerationEvents.ModelGenerationFailed -= OnModelGenerationFailed;
         _modelGenerationEvents.ModelGenerationStatusUpdated -= OnModelGenerationStatusUpdated;
+        _globalEvents.ModelCreated -= OnModelCreated;
     }
 }
