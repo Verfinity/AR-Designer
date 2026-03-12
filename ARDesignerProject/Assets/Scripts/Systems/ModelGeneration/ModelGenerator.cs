@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -24,9 +25,14 @@ namespace ModelGeneration
             _modelGenerationEvents = ModelGenerationEvents.GetInstance();
         }
 
-        private void OnImageLoaded(string imageUrl)
+        private void OnImageUrlLoaded(string imageUrl)
         {
-            StartCoroutine(GetModelGenerationTaskCoroutine(imageUrl));
+            StartCoroutine(GenerateModelCoroutine(GetGenerateModelFromImageUrlData(imageUrl)));
+        }
+
+        private void OnImageFileLoaded(string imagePath)
+        {
+            StartCoroutine(UploadImageCoroutine(imagePath));
         }
 
         private string GetImageType(string imageUrl)
@@ -36,27 +42,74 @@ namespace ModelGeneration
             return type;
         }
 
-        private IEnumerator GetModelGenerationTaskCoroutine(string imageUrl)
+        private IEnumerator UploadImageCoroutine(string imagePath)
         {
-            var body = new GenerateModelRequest
+            var wwwForm = new WWWForm();
+            byte[] imageData = File.ReadAllBytes(imagePath);
+            wwwForm.AddBinaryData("file", imageData, imagePath, $"image/{GetImageType(imagePath)}");
+            using (var request = UnityWebRequest.Post($"{_modelGenerationConfig.ApiUrl}/upload/sts", wwwForm))
+            {
+                request.downloadHandler = new DownloadHandlerBuffer();
+
+                request.SetRequestHeader("Authorization", $"Bearer {_modelGenerationConfig.ApiKey}");
+
+                yield return request.SendWebRequest();
+
+                if (request.result == UnityWebRequest.Result.Success)
+                {
+                    string responseText = request.downloadHandler.text;
+                    var responseData = JsonUtility.FromJson<UploadFileResponse>(responseText);
+                    string imageToken = responseData.data.image_token;
+
+                    Debug.Log($"Image token: {imageToken}");
+                    StartCoroutine(GenerateModelCoroutine(GetGenerateModelFromImageFileData(imageToken)));
+                }
+                else
+                {
+                    Debug.Log($"Can't load file with status code: {request.responseCode}");
+                    Debug.Log(request.downloadHandler.text);
+                }
+            }
+        }
+
+        private string GetGenerateModelFromImageUrlData(string imageUrl)
+        {
+            var body = new GenerateModelFromImageUrlRequest
             {
                 type = "image_to_model",
-                file = new GenerateModelFile
+                file = new GenerateModelFromImageUrlFile
                 {
                     type = GetImageType(imageUrl),
                     url = imageUrl
                 }
             };
-
             string jsonBody = JsonUtility.ToJson(body);
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(jsonBody);
 
-            using (var request = new UnityWebRequest(_modelGenerationConfig.ApiUrl, "POST"))
+            return jsonBody;
+        }
+
+        private string GetGenerateModelFromImageFileData(string imageToken)
+        {
+            var body = new GenerateModelFromImageDataRequest
             {
-                request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+                type = "image_to_model",
+                file = new GenerateModelFromImageDataFile
+                {
+                    type = GetImageType(imageToken),
+                    file_token = imageToken
+                }
+            };
+            string jsonBody = JsonUtility.ToJson(body);
+
+            return jsonBody;
+        }
+
+        private IEnumerator GenerateModelCoroutine(string jsonBody)
+        {
+            using (var request = UnityWebRequest.Post($"{_modelGenerationConfig.ApiUrl}/task", jsonBody, "application/json"))
+            {
                 request.downloadHandler = new DownloadHandlerBuffer();
 
-                request.SetRequestHeader("Content-Type", "application/json");
                 request.SetRequestHeader("Authorization", $"Bearer {_modelGenerationConfig.ApiKey}");
 
                 yield return request.SendWebRequest();
@@ -84,7 +137,7 @@ namespace ModelGeneration
             _currentAttemsToAskFaieldTask = 0;
             while (true)
             {
-                using (var request = new UnityWebRequest($"{_modelGenerationConfig.ApiUrl}/{taskId}", "GET"))
+                using (var request = UnityWebRequest.Get($"{_modelGenerationConfig.ApiUrl}/task/{taskId}"))
                 {
                     request.downloadHandler = new DownloadHandlerBuffer();
 
@@ -138,30 +191,54 @@ namespace ModelGeneration
 
         private void OnEnable()
         {
-            _globalEvents.ImageLoaded += OnImageLoaded;
+            _globalEvents.ImageUrlLoaded += OnImageUrlLoaded;
+            _globalEvents.ImageFileLoaded += OnImageFileLoaded;
         }
 
         private void OnDisable()
         {
-            _globalEvents.ImageLoaded -= OnImageLoaded;
+            _globalEvents.ImageUrlLoaded -= OnImageUrlLoaded;
+            _globalEvents.ImageFileLoaded -= OnImageFileLoaded;
         }
     }
 
     #region GENERATE_MODEL_REQUEST
 
+    #region GENERATE_MODEL_FROM_IMAGE_URL
+
     [Serializable]
-    public class GenerateModelRequest
+    public class GenerateModelFromImageUrlRequest
     {
         public string type;
-        public GenerateModelFile file;
+        public GenerateModelFromImageUrlFile file;
     }
 
     [Serializable]
-    public class GenerateModelFile
+    public class GenerateModelFromImageUrlFile
     {
         public string type;
         public string url;
     }
+
+    #endregion
+
+    #region GENERATE_MODEL_FROM_IMAGE_DATA
+
+    [Serializable]
+    public class GenerateModelFromImageDataRequest
+    {
+        public string type;
+        public GenerateModelFromImageDataFile file;
+    }
+
+    [Serializable]
+    public class GenerateModelFromImageDataFile
+    {
+        public string type;
+        public string file_token;
+    }
+
+    #endregion
 
     #endregion
 
@@ -179,6 +256,20 @@ namespace ModelGeneration
         public string task_id;
     }
 
+    #endregion
+
+    #region UPLOAD_FILE_RESPONSE
+    [Serializable]
+    public class UploadFileResponse
+    {
+        public UploadFileData data;
+    }
+
+    [Serializable]
+    public class UploadFileData
+    {
+        public string image_token;
+    }
     #endregion
 
     #region TASK_STATUS_RESPONSE

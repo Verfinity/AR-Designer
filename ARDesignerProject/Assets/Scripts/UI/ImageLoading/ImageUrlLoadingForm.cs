@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class ImageLoadingForm : MonoBehaviour
+public class ImageUrlLoadingForm : MonoBehaviour
 {
     [SerializeField]
     private TMP_InputField _inputField;
@@ -23,7 +23,7 @@ public class ImageLoadingForm : MonoBehaviour
         if (_inputField.text == string.Empty)
             return;
 
-        _globalEvents.ImageLoaded?.Invoke(_inputField.text);
+        _globalEvents.ImageUrlLoaded?.Invoke(_inputField.text);
         Debug.Log($"Entered URL: {_inputField.text}");
     }
 }

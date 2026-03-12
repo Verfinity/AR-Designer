@@ -4,9 +4,10 @@ using static ModelGenerationEvents;
 
 public class GlobalEvents : Singleton<GlobalEvents>
 {
-    public Action<string> ImageLoaded;
+    public Action<string> ImageUrlLoaded;
+    public Action<string> ImageFileLoaded;
     public GenerationModel ModelSelected;
     public CreationModel ModelCreated;
 
-    public delegate void CreationModel(string modelId, GameObject modelObj);
+    public delegate void CreationModel(string modelId, GameObject modelObj); 
 }
