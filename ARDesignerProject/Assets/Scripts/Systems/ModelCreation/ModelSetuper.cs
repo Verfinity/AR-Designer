@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.AR;
 
 [RequireComponent(typeof(ModelCreator))]
 public class ModelSetuper : MonoBehaviour
@@ -15,12 +16,28 @@ public class ModelSetuper : MonoBehaviour
         _globalEvents = GlobalEvents.GetInstance();
     }
 
+    private BoxCollider SetBoxCollider(GameObject modelVisual)
+    {
+        var boxCollider = modelVisual.AddComponent<BoxCollider>();
+        var renderer = modelVisual.GetComponent<Renderer>();
+
+        boxCollider.center = modelVisual.transform.InverseTransformPoint(renderer.bounds.center);
+        boxCollider.size = renderer.bounds.size;
+
+        return boxCollider;
+    }
+
     private void SetupModel(GameObject modelObj)
     {
         var modelVisual = modelObj.transform.GetChild(0).gameObject;
 
         modelVisual.SetActive(false);
-        modelVisual.AddComponent<MeshCollider>();
+
+        var collider = SetBoxCollider(modelVisual);
+        ARSelectionInteractable selectionInteractable;
+        if (modelObj.TryGetComponent<ARSelectionInteractable>(out selectionInteractable))
+            selectionInteractable.colliders.Add(collider);
+        
         modelVisual.transform.localScale = Vector3.one * _startScale;
     }
 

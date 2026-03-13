@@ -51,7 +51,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_Colliders: []
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 4294967295
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_FocusMode: 1
@@ -129,7 +129,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_Colliders: []
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 4294967295
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_FocusMode: 1
@@ -211,7 +211,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_Colliders: []
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 4294967295
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_FocusMode: 1
@@ -290,7 +290,7 @@ MonoBehaviour:
   m_InteractionManager: {fileID: 0}
   m_Colliders: []
   m_InteractionLayers:
-    m_Bits: 1
+    m_Bits: 4294967295
   m_DistanceCalculationMode: 1
   m_SelectMode: 0
   m_FocusMode: 1
@@ -352,11 +352,11 @@ MonoBehaviour:
   m_ARSessionOrigin: {fileID: 0}
   m_XROrigin: {fileID: 0}
   m_ExcludeUITouches: 1
-  m_MinScale: 0.01
-  m_MaxScale: 100
+  m_MinScale: 0.1
+  m_MaxScale: 10
   m_ElasticRatioLimit: 0
   m_Sensitivity: 0.1
-  m_Elasticity: 0.15
+  m_Elasticity: 0
 --- !u!114 &-6199529504753188335
 MonoBehaviour:
   m_ObjectHideFlags: 0
