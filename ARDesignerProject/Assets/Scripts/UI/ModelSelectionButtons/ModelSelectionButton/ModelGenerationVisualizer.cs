@@ -16,13 +16,16 @@ public class ModelGenerationVisualizer : MonoBehaviour
 
     private ModelGenerationEvents _modelGenerationEvents;
     private GlobalEvents _globalEvents;
-    private string _modelImageUrl = string.Empty;
+
+    // Texture applying
+    private bool _modelCreated = false;
+    private Texture2D _modelTexture;
 
     private void Awake()
     {
         _modelGenerationEvents = ModelGenerationEvents.GetInstance();
         _globalEvents = GlobalEvents.GetInstance();
-        _modelGenerationProgressText.text = "0%";
+        _modelGenerationProgressText.text = "Waiting...";
     }
 
     private void OnModelGenerationStatusUpdated(string modelId, int progress)
@@ -47,13 +50,15 @@ public class ModelGenerationVisualizer : MonoBehaviour
             return;
 
         _modelGenerationProgressText.text = "Creating...";
-        _modelImageUrl = modelImageUrl;
+        StartCoroutine(SetTexture(modelImageUrl));
     }
 
     private void OnModelCreated(string modelId, GameObject modelObj)
     {
         _modelGenerationProgressText.gameObject.SetActive(false);
-        StartCoroutine(SetTexture(_modelImageUrl));
+        _modelCreated = true;
+        if (_modelTexture != null)
+            _rawImage.texture = _modelTexture;
     }
 
     private IEnumerator SetTexture(string imageUrl)
@@ -66,8 +71,9 @@ public class ModelGenerationVisualizer : MonoBehaviour
 
             if (request.result == UnityWebRequest.Result.Success)
             {
-                var texture2D = Texture2DExt.CreateTexture2DFromWebP(request.downloadHandler.data, true, true, out _);
-                _rawImage.texture = texture2D;
+                _modelTexture = Texture2DExt.CreateTexture2DFromWebP(request.downloadHandler.data, true, true, out _);
+                if (_modelCreated)
+                    _rawImage.texture = _modelTexture;
             }
         }
     }
