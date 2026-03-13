@@ -20,7 +20,7 @@ public class ModelSelectionVisualizer : MonoBehaviour
 
     private void OnModelSelected(string selectedModelId)
     {
-        if (_modelIdentity.ModelId != selectedModelId)
+        if (_modelIdentity.Id != selectedModelId)
             _rectTransform.localScale = Vector2.one;
         else
             _rectTransform.localScale = Vector2.one * _selectedScale;

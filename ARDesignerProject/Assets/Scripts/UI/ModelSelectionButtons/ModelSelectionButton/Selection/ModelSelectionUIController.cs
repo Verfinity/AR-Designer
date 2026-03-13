@@ -23,7 +23,7 @@ public class ModelSelectionUIController : MonoBehaviour
 
     private void OnButtonPressed()
     {
-        _globalEvents.ModelSelected?.Invoke(_modelIdentity.ModelId);
+        _globalEvents.ModelSelected?.Invoke(_modelIdentity.Id);
     }
 
     private void OnEnable()

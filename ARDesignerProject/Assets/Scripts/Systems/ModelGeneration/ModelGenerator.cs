@@ -66,6 +66,7 @@ namespace ModelGeneration
                 }
                 else
                 {
+                    _modelGenerationEvents.RequestSendingFailed?.Invoke();
                     Debug.Log($"Can't load file with status code: {request.responseCode}");
                     Debug.Log(request.downloadHandler.text);
                 }
@@ -125,6 +126,7 @@ namespace ModelGeneration
                 }
                 else
                 {
+                    _modelGenerationEvents.RequestSendingFailed?.Invoke();
                     Debug.Log($"Can't create task with status code: {request.responseCode}");
                     Debug.Log(request.downloadHandler.text);
                 }

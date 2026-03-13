@@ -10,12 +10,19 @@ public class ModelGenerationVisualizer : MonoBehaviour
     [SerializeField]
     private ModelIdentity _modelIdentity;
     [SerializeField]
+    private ModelSelectionButtonIdentity _buttonIdentity;
+    [SerializeField]
     private TextMeshProUGUI _modelGenerationProgressText;
     [SerializeField]
     private RawImage _rawImage;
+    [SerializeField]
+    private Color _failedColor = Color.red;
+    [SerializeField]
+    private float _failedSecondsCount = 1f;
 
     private ModelGenerationEvents _modelGenerationEvents;
     private GlobalEvents _globalEvents;
+    private UIEvents _uiEvents;
 
     // Texture applying
     private bool _modelCreated = false;
@@ -25,12 +32,32 @@ public class ModelGenerationVisualizer : MonoBehaviour
     {
         _modelGenerationEvents = ModelGenerationEvents.GetInstance();
         _globalEvents = GlobalEvents.GetInstance();
+        _uiEvents = UIEvents.GetInstance();
         _modelGenerationProgressText.text = "Waiting...";
+    }
+
+    private IEnumerator DestroyButton()
+    {
+        _rawImage.color = _failedColor;
+        _modelGenerationProgressText.text = "Failed";
+
+        yield return new WaitForSeconds(_failedSecondsCount);
+
+        _uiEvents.ModelSelectionButtonDestroyed?.Invoke(_buttonIdentity.Id);
+        Destroy(gameObject);
+    }
+
+    private void OnButtonDeleted(string buttonId)
+    {
+        if (_buttonIdentity.Id != buttonId)
+            return;
+
+        StartCoroutine(DestroyButton());
     }
 
     private void OnModelGenerationStatusUpdated(string modelId, int progress)
     {
-        if (_modelIdentity.ModelId != modelId)
+        if (_modelIdentity.Id != modelId)
             return;
 
         _modelGenerationProgressText.text = $"{progress}%";
@@ -38,15 +65,15 @@ public class ModelGenerationVisualizer : MonoBehaviour
 
     private void OnModelGenerationFailed(string modelId)
     {
-        if (_modelIdentity.ModelId != modelId)
+        if (_modelIdentity.Id != modelId)
             return;
 
-        Destroy(gameObject);
+        StartCoroutine(DestroyButton());
     }
 
     private void OnModelGenerationSucceeded(string modelId, string modelUrl, string modelImageUrl)
     {
-        if (_modelIdentity.ModelId != modelId)
+        if (_modelIdentity.Id != modelId)
             return;
 
         _modelGenerationProgressText.text = "Creating...";
@@ -84,6 +111,7 @@ public class ModelGenerationVisualizer : MonoBehaviour
         _modelGenerationEvents.ModelGenerationFailed += OnModelGenerationFailed;
         _modelGenerationEvents.ModelGenerationStatusUpdated += OnModelGenerationStatusUpdated;
         _globalEvents.ModelCreated += OnModelCreated;
+        _uiEvents.DestroyModelSelectionButton += OnButtonDeleted;
     }
 
     private void OnDisable()
@@ -92,5 +120,6 @@ public class ModelGenerationVisualizer : MonoBehaviour
         _modelGenerationEvents.ModelGenerationFailed -= OnModelGenerationFailed;
         _modelGenerationEvents.ModelGenerationStatusUpdated -= OnModelGenerationStatusUpdated;
         _globalEvents.ModelCreated -= OnModelCreated;
+        _uiEvents.DestroyModelSelectionButton -= OnButtonDeleted;
     }
 }
