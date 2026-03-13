@@ -27,16 +27,29 @@ public class ModelSetuper : MonoBehaviour
         return boxCollider;
     }
 
+    private void SetupSelectionObjectSize(Transform selectionObject, GameObject modelVisual)
+    {
+        var renderer = modelVisual.GetComponent<Renderer>();
+
+        selectionObject.position = renderer.bounds.center;
+        selectionObject.localScale = renderer.bounds.size;
+    }
+
     private void SetupModel(GameObject modelObj)
     {
-        var modelVisual = modelObj.transform.GetChild(0).gameObject;
+        // SelectionVisualization object has 0 index
+        var modelVisual = modelObj.transform.GetChild(1).gameObject;
 
         modelVisual.SetActive(false);
 
         var collider = SetBoxCollider(modelVisual);
         ARSelectionInteractable selectionInteractable;
         if (modelObj.TryGetComponent<ARSelectionInteractable>(out selectionInteractable))
+        {
             selectionInteractable.colliders.Add(collider);
+
+            SetupSelectionObjectSize(selectionInteractable.selectionVisualization.transform, modelVisual);
+        }
         
         modelVisual.transform.localScale = Vector3.one * _startScale;
     }

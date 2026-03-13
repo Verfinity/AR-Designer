@@ -4,6 +4,6 @@ public class ModelSpawnVisualizer : MonoBehaviour
 {
     private void OnEnable()
     {
-        transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetChild(1).gameObject.SetActive(true);
     }
 }
