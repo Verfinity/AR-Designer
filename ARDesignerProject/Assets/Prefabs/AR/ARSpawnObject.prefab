@@ -104,6 +104,7 @@ GameObject:
   - component: {fileID: 5124027730073186889}
   - component: {fileID: 3474907975893809278}
   - component: {fileID: -6199529504753188335}
+  - component: {fileID: 1005209411443146897}
   m_Layer: 0
   m_Name: ARSpawnObject
   m_TagString: Untagged
@@ -460,3 +461,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b93bdcf94581b74da04ca11344a0ead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ModelSpawnVisualizer
+--- !u!114 &1005209411443146897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3506896159761161600}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bdffb84f446ab54b990d45e314d4dc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ModelDeletionController
+  _selectionInteractable: {fileID: 4655666338250008720}
