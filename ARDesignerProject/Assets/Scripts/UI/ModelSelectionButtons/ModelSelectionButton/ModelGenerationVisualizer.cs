@@ -38,7 +38,7 @@ public class ModelGenerationVisualizer : MonoBehaviour
 
     private IEnumerator DestroyButton()
     {
-        _rawImage.color = _failedColor;
+        _modelGenerationProgressText.color = _failedColor;
         _modelGenerationProgressText.text = "Failed";
 
         yield return new WaitForSeconds(_failedSecondsCount);

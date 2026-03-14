@@ -136,7 +136,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ModelSelectionButtonCreator
   _instantiateParentLayoutGroup: {fileID: 1808984100893365728}
-  _instantiateButton: {fileID: 8800792235828864528, guid: dcd95cd6146f4e041940aafea99b38ed, type: 3}
+  _instantiateButton: {fileID: 5311402523173051115, guid: b398f8282002539459811386f24935f0, type: 3}
 --- !u!1 &5249591209030720758
 GameObject:
   m_ObjectHideFlags: 0
@@ -282,7 +282,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0970fdabb02790944ac9f34c9f3ce643, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d69a6eca796afd5438ee04af6d4b079c, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -311,7 +311,7 @@ MonoBehaviour:
     m_SelectOnDown: {fileID: 0}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
+  m_Transition: 0
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
