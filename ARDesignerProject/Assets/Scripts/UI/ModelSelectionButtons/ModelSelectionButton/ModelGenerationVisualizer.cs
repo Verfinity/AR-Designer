@@ -88,6 +88,9 @@ public class ModelGenerationVisualizer : MonoBehaviour
 
     private void OnModelCreated(string modelId, GameObject modelObj)
     {
+        if (_modelIdentity.Id != modelId)
+            return;
+
         _modelGenerationProgressText.gameObject.SetActive(false);
         _modelCreated = true;
         if (_modelTexture != null)
