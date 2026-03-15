@@ -71,13 +71,19 @@ public class ModelGenerationVisualizer : MonoBehaviour
         StartCoroutine(DestroyButton());
     }
 
+    private void SetTexture()
+    {
+        _rawImage.texture = _modelTexture;
+        _rawImage.color = Color.white;
+    }
+
     private void OnModelGenerationSucceeded(string modelId, string modelUrl, string modelImageUrl)
     {
         if (_modelIdentity.Id != modelId)
             return;
 
         _modelGenerationProgressText.text = "Creating...";
-        StartCoroutine(SetTexture(modelImageUrl));
+        StartCoroutine(SetTextureCoroutine(modelImageUrl));
     }
 
     private void OnModelCreated(string modelId, GameObject modelObj)
@@ -85,10 +91,10 @@ public class ModelGenerationVisualizer : MonoBehaviour
         _modelGenerationProgressText.gameObject.SetActive(false);
         _modelCreated = true;
         if (_modelTexture != null)
-            _rawImage.texture = _modelTexture;
+            SetTexture();
     }
 
-    private IEnumerator SetTexture(string imageUrl)
+    private IEnumerator SetTextureCoroutine(string imageUrl)
     {
         using (var request = new UnityWebRequest(imageUrl, "GET"))
         {
@@ -100,7 +106,7 @@ public class ModelGenerationVisualizer : MonoBehaviour
             {
                 _modelTexture = Texture2DExt.CreateTexture2DFromWebP(request.downloadHandler.data, true, true, out _);
                 if (_modelCreated)
-                    _rawImage.texture = _modelTexture;
+                    SetTexture();
             }
         }
     }

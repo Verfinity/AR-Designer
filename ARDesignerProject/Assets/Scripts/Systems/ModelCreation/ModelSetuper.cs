@@ -27,12 +27,34 @@ public class ModelSetuper : MonoBehaviour
         return boxCollider;
     }
 
-    private void SetupSelectionObjectSize(Transform selectionObject, GameObject modelVisual)
+    private void SetupCollider(GameObject modelObj, GameObject modelVisual)
+    {
+        var interactables = modelObj.GetComponents<ARBaseGestureInteractable>();
+        foreach (var interactable in interactables)
+            interactable.enabled = false;
+        SetBoxCollider(modelVisual);
+        foreach (var interactable in interactables)
+            interactable.enabled = true;
+    }
+
+    private void SetupSelectionObject(Transform selectionObject, GameObject modelVisual)
     {
         var renderer = modelVisual.GetComponent<Renderer>();
 
-        selectionObject.position = renderer.bounds.center;
+        selectionObject.position = renderer.bounds.center + new Vector3(0, renderer.bounds.size.y / 2, 0);
+        selectionObject.localRotation = Quaternion.identity;
         selectionObject.localScale = renderer.bounds.size;
+    }
+
+    private void SetupModelVisual(GameObject modelVisual)
+    {
+        modelVisual.SetActive(false);
+
+        var renderer = modelVisual.GetComponent<Renderer>();
+
+        modelVisual.transform.position += new Vector3(0, renderer.bounds.size.y / 2, 0);
+        modelVisual.transform.localRotation = Quaternion.identity;
+        modelVisual.transform.localScale = Vector3.one * _startScale;
     }
 
     private void SetupModel(GameObject modelObj)
@@ -40,18 +62,13 @@ public class ModelSetuper : MonoBehaviour
         // SelectionVisualization object has 0 index
         var modelVisual = modelObj.transform.GetChild(1).gameObject;
 
-        modelVisual.SetActive(false);
+        SetupCollider(modelObj, modelVisual);
 
-        var collider = SetBoxCollider(modelVisual);
         ARSelectionInteractable selectionInteractable;
         if (modelObj.TryGetComponent<ARSelectionInteractable>(out selectionInteractable))
-        {
-            selectionInteractable.colliders.Add(collider);
+            SetupSelectionObject(selectionInteractable.selectionVisualization.transform, modelVisual);
 
-            SetupSelectionObjectSize(selectionInteractable.selectionVisualization.transform, modelVisual);
-        }
-        
-        modelVisual.transform.localScale = Vector3.one * _startScale;
+        SetupModelVisual(modelVisual);
     }
 
     private void OnUnsetupedModelCreated(string modelId, GameObject modelObj)
