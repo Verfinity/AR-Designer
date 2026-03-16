@@ -1175,7 +1175,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.XR.ARFoundation::UnityEngine.XR.ARFoundation.AROcclusionManager
   m_HumanSegmentationStencilMode: 0
   m_HumanSegmentationDepthMode: 0
-  m_EnvironmentDepthMode: 2
+  m_EnvironmentDepthMode: 3
   m_EnvironmentDepthTemporalSmoothing: 1
   m_OcclusionPreferenceMode: 0
 --- !u!1 &1735542795
@@ -1695,7 +1695,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8316352917240300100, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 190.32
+      value: 139.92598
       objectReference: {fileID: 0}
     - target: {fileID: 8316352917240300100, guid: 983edf3806d120b49bb8a303409dd81d, type: 3}
       propertyPath: m_SizeDelta.y
